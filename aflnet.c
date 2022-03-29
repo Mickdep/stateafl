@@ -1109,6 +1109,19 @@ region_t *extract_requests_dtls12(unsigned char* buf, unsigned int buf_size, uns
   return regions;
 }
 
+// Function that's going to extract the QUIC requests from the .pcap file
+region_t* extract_requests_quic(unsigned char* buf, unsigned int buf_size, unsigned int* region_count_ref)
+{
+   char *mem;
+  unsigned int byte_count = 0;
+  unsigned int mem_count = 0;
+  unsigned int mem_size = 1024;
+  unsigned int region_count = 0;
+  region_t *regions = NULL;
+
+  return regions;
+}
+
 // a status code comprises <content_type, message_type> tuples
 // message_type varies depending on content_type (e.g. for handshake content, message_type is the handshake message type...)
 //
@@ -1500,6 +1513,13 @@ unsigned int* extract_response_codes_ipp(unsigned char* buf, unsigned int buf_si
   if (mem) ck_free(mem);
   *state_count_ref = state_count;
   return state_sequence;
+}
+
+// Simply return NULL here for the response codes, since QUIC has no response codes.
+// Additioanlly, StateAFL does not need this.
+unsigned int* extract_response_codes_quic(unsigned char* buf, unsigned int buf_size, unsigned int* state_count_ref)
+{
+  return NULL;
 }
 
 // kl_messages manipulating functions
