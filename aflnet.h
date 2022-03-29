@@ -72,6 +72,11 @@ unsigned int* extract_response_codes_ipp(unsigned char* buf, unsigned int buf_si
 unsigned int* extract_response_codes_quic(unsigned char* buf, unsigned int buf_size, unsigned int* state_count_ref);
 extern unsigned int* (*extract_response_codes)(unsigned char* buf, unsigned int buf_size, unsigned int* state_count_ref);
 
+/*
+This function was confusing to me at first. I did not know where it extracted the requests from, or which requests it even extracted.
+I turns out that this function extracts the requests from the .pcap file.
+This function goes through the file contents, looks for a certain separator (so it knows when one request ends, and when one request starts), and then marks that region and returns it.
+*/
 region_t* extract_requests_smtp(unsigned char* buf, unsigned int buf_size, unsigned int* region_count_ref);
 region_t* extract_requests_ssh(unsigned char* buf, unsigned int buf_size, unsigned int* region_count_ref);
 region_t* extract_requests_tls(unsigned char* buf, unsigned int buf_size, unsigned int* region_count_ref);
