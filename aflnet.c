@@ -1109,7 +1109,16 @@ region_t *extract_requests_dtls12(unsigned char* buf, unsigned int buf_size, uns
   return regions;
 }
 
-// Function that's going to extract the QUIC requests from the .pcap file
+/*
+Function that's going to extract the QUIC requests from the .pcap file
+My current strategy is as follows:
+
+1. Capture the QUIC traffic
+2. Decrypt the QUIC traffic (using SSLKEYLOG file)
+3. Transform all the QUIC requests to "raw"
+4. Since there is no clear terminator/separator between the requests, separate the different requests with a new-line or some other distinct character
+5. Parse the requests here based on the new-line or terminator.
+*/
 region_t* extract_requests_quic(unsigned char* buf, unsigned int buf_size, unsigned int* region_count_ref)
 {
    char *mem;
@@ -1515,8 +1524,11 @@ unsigned int* extract_response_codes_ipp(unsigned char* buf, unsigned int buf_si
   return state_sequence;
 }
 
-// Simply return NULL here for the response codes, since QUIC has no response codes.
-// Additioanlly, StateAFL does not need this.
+/*
+Simply return NULL here for the response codes because of two reasons:
+1. QUIC has no response codes (lol)
+2. StateAFL does not need this function anymore as it does not rely on the response codes for state information
+*/
 unsigned int* extract_response_codes_quic(unsigned char* buf, unsigned int buf_size, unsigned int* state_count_ref)
 {
   return NULL;
